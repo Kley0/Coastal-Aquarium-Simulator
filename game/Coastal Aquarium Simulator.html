@@ -556,7 +556,7 @@
         🐠 Marine Life: <span id="fish-count">5</span>
        </div>
        <div>
-        🪸 Coral: <span id="coral-count">3</span>
+        🌱 Coral: <span id="coral-count">3</span>
        </div>
       </div>
       <div class="water-layer"></div>
@@ -800,6 +800,7 @@
             if (creature.y < 30 || creature.y > 320) creature.vy *= -1;
 
             creature.element.style.left = `${creature.x}%`;
+             creature.element.style.right = `${creature.x}%`;
             creature.element.style.top = `${creature.y}px`;
           });
 
