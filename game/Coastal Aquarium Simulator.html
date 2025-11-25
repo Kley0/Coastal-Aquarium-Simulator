@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<!-- saved from url=(0029)file:///D:/ky/Untitled-1.html -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Coastal Aquarium Simulator</title>
-  <script src="file:///D:/_sdk/element_sdk.js"></script>
+  <title>Marine Aquarium Simulator</title>
+  <script src="/_sdk/element_sdk.js"></script>
   <style>
     body {
       box-sizing: border-box;
@@ -26,9 +26,8 @@
       display: flex;
       flex-direction: column;
       padding: 20px;
-      width: 100%;
+      max-width: 1600px;
       margin: 0 auto;
-      object-fit: cover;
     }
 
     .top-bar {
@@ -128,6 +127,40 @@
       50% { opacity: 1; }
     }
 
+    .dirt-particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: rgba(139, 90, 43, 0.6);
+      border-radius: 50%;
+      z-index: 4;
+      animation: float 8s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0) translateX(0);
+      }
+      25% {
+        transform: translateY(-30px) translateX(10px);
+      }
+      50% {
+        transform: translateY(-15px) translateX(-10px);
+      }
+      75% {
+        transform: translateY(-40px) translateX(5px);
+      }
+    }
+
+    .algae-spot {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: radial-gradient(circle, rgba(34, 139, 34, 0.4) 0%, transparent 70%);
+      border-radius: 50%;
+      z-index: 2;
+    }
+
     .creature {
       position: absolute;
       font-size: 32px;
@@ -135,11 +168,16 @@
       cursor: pointer;
       filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
       z-index: 5;
+      transform-origin: center;
     }
 
     .creature:hover {
-      transform: scale(1.2);
+      transform: scale(1.2) !important;
       filter: drop-shadow(0 6px 12px rgba(77, 208, 225, 0.6));
+    }
+
+    .creature.facing-left {
+      transform: scaleX(-1);
     }
 
     .plant {
@@ -224,14 +262,37 @@
       height: 12px;
       background: rgba(0, 0, 0, 0.5);
       border-radius: 6px;
-      overflow: hidden;
+      overflow: visible;
       border: 1px solid rgba(100, 200, 255, 0.3);
+      position: relative;
     }
 
     .metric-bar {
       height: 100%;
       transition: width 0.4s ease, background-color 0.4s ease;
       border-radius: 6px;
+    }
+
+    .ideal-range-indicator {
+      position: absolute;
+      top: -2px;
+      bottom: -2px;
+      background: rgba(0, 230, 118, 0.3);
+      border-left: 2px solid #00e676;
+      border-right: 2px solid #00e676;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .ideal-marker {
+      position: absolute;
+      top: -4px;
+      bottom: -4px;
+      width: 2px;
+      background: #00e676;
+      box-shadow: 0 0 4px #00e676;
+      pointer-events: none;
+      z-index: 2;
     }
 
     .bar-excellent { background: linear-gradient(90deg, #00e676, #00c853); }
@@ -306,8 +367,9 @@
     }
 
     .action-cost {
-      font-size: 11px;
+      font-size: 16px;
       color: #b3e5fc;
+      font-weight: bold;
     }
 
     .day-advance-btn {
@@ -344,15 +406,15 @@
       flex: 1;
       overflow-y: auto;
       display: flex;
-      flex-direction: column-reverse;
+      flex-direction: column;
     }
 
     .log-message {
-      padding: 10px 12px;
-      margin-bottom: 8px;
+      padding: 12px 15px;
+      margin-bottom: 10px;
       border-radius: 8px;
-      font-size: 13px;
-      line-height: 1.5;
+      font-size: 15px;
+      line-height: 1.6;
       border-left: 4px solid;
       animation: slideIn 0.3s ease-out;
     }
@@ -508,59 +570,61 @@
     }
   </style>
   <style>@view-transition { navigation: auto; }</style>
-  <script src="file:///D:/_sdk/data_sdk.js" type="text/javascript"></script>
-  <script src="./Untitled-1_files/saved_resource" type="text/javascript"></script>
- <style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}</style><style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}</style><style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}</style></head>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
  <body>
   <div class="game-wrapper">
    <div class="top-bar">
-    <h1 class="game-title" id="game-title">🌊 COASTAL AQUARIUM SIMULATOR 🌊</h1>
+    <h1 class="game-title" id="game-title">🌊 MARINE AQUARIUM SIMULATOR 🌊</h1>
     <div class="status-grid">
      <div class="status-box">
       <div class="status-label">
        Day
       </div>
-      <div class="status-number" id="day-display">1</div>
+      <div class="status-number" id="day-display">
+       1
+      </div>
      </div>
      <div class="status-box">
       <div class="status-label">
        Budget
       </div>
-      <div class="status-number" id="budget-display">$500</div>
+      <div class="status-number" id="budget-display">
+       $500
+      </div>
      </div>
      <div class="status-box">
       <div class="status-label">
        Comfort
       </div>
-      <div class="status-number" id="comfort-display">75</div>
+      <div class="status-number" id="comfort-display">
+       75
+      </div>
      </div>
      <div class="status-box">
       <div class="status-label">
        Health
       </div>
-      <div class="status-number" id="health-display">75</div>
+      <div class="status-number" id="health-display">
+       75
+      </div>
      </div>
      <div class="status-box">
       <div class="status-label">
        Cleanliness
       </div>
-      <div class="status-number" id="cleanliness-display">80</div>
+      <div class="status-number" id="cleanliness-display">
+       80
+      </div>
      </div>
     </div>
    </div>
    <div class="main-game-area">
     <div class="tank-section">
      <div class="aquarium-display" id="aquarium">
-      <div class="tank-info">
-       <div>
-        🐠 Marine Life: <span id="fish-count">5</span>
-       </div>
-       <div>
-        🌱 Coral: <span id="coral-count">3</span>
-       </div>
-      </div>
       <div class="water-layer"></div>
-     <div class="rock" style="left: 15%;">⚫</div><div class="rock" style="left: 40%;">⬛</div><div class="rock" style="left: 65%;">◼</div><div class="rock" style="left: 90%;">⬛</div><div class="plant" style="left: 10%; animation-delay: 0s;">🪸</div><div class="plant" style="left: 28%; animation-delay: 0.5s;">🌱</div><div class="plant" style="left: 46%; animation-delay: 1s;">🌱</div><div class="plant" style="left: 64%; animation-delay: 1.5s;">🌿</div><div class="plant" style="left: 82%; animation-delay: 2s;">🌱</div><div class="creature" data-index="0" style="left: 52.9264%; top: 39.7625px;">🐠</div><div class="creature" data-index="1" style="left: 32.9611%; top: 156.463px;">🐟</div><div class="creature" data-index="2" style="left: 18.836%; top: 57.328px;">🐡</div><div class="creature" data-index="3" style="left: 19.1457%; top: 166.678px;">🦈</div><div class="creature" data-index="4" style="left: 35.26%; top: 264.977px;">🐙</div><div class="particle" style="left: 5.22816%; bottom: 0px; animation-duration: 4.17293s;"></div><div class="particle" style="left: 92.9648%; bottom: 0px; animation-duration: 4.81461s;"></div><div class="particle" style="left: 39.8404%; bottom: 0px; animation-duration: 4.59082s;"></div><div class="particle" style="left: 32.2301%; bottom: 0px; animation-duration: 4.06286s;"></div><div class="particle" style="left: 9.45428%; bottom: 0px; animation-duration: 4.35211s;"></div><div class="particle" style="left: 85.3449%; bottom: 0px; animation-duration: 3.76537s;"></div><div class="particle" style="left: 76.921%; bottom: 0px; animation-duration: 4.51715s;"></div><div class="particle" style="left: 24.9522%; bottom: 0px; animation-duration: 4.81682s;"></div><div class="rock" style="left: 15%;">🪨</div><div class="rock" style="left: 40%;">🪨</div><div class="rock" style="left: 65%;">🪨</div><div class="rock" style="left: 90%;">🪨</div><div class="plant" style="left: 10%; animation-delay: 0s;">🌱</div><div class="plant" style="left: 28%; animation-delay: 0.5s;">🪸</div><div class="plant" style="left: 46%; animation-delay: 1s;">🌱</div><div class="plant" style="left: 64%; animation-delay: 1.5s;">🪸</div><div class="plant" style="left: 82%; animation-delay: 2s;">🪸</div><div class="creature" data-index="0" style="left: 45.7898%; top: 148.142px;">🐠</div><div class="creature" data-index="1" style="left: 23.7461%; top: 105.381px;">🐟</div><div class="creature" data-index="2" style="left: 23.1488%; top: 246.801px;">🐡</div><div class="creature" data-index="3" style="left: 77.7551%; top: 184.207px;">🦈</div><div class="creature" data-index="4" style="left: 26.1723%; top: 81.2884px;">🐙</div><div class="particle" style="left: 93.0289%; bottom: 0px; animation-duration: 4.44183s;"></div><div class="particle" style="left: 81.1749%; bottom: 0px; animation-duration: 3.9968s;"></div><div class="particle" style="left: 52.8612%; bottom: 0px; animation-duration: 3.4897s;"></div><div class="particle" style="left: 88.5767%; bottom: 0px; animation-duration: 4.10641s;"></div><div class="particle" style="left: 47.915%; bottom: 0px; animation-duration: 3.25081s;"></div><div class="particle" style="left: 77.8156%; bottom: 0px; animation-duration: 4.93947s;"></div><div class="particle" style="left: 13.0668%; bottom: 0px; animation-duration: 4.94818s;"></div><div class="particle" style="left: 76.1886%; bottom: 0px; animation-duration: 4.02144s;"></div><div class="rock" style="left: 15%;">🪨</div><div class="rock" style="left: 40%;">🪨</div><div class="rock" style="left: 65%;">🪨</div><div class="rock" style="left: 90%;">🪨</div><div class="plant" style="left: 10%; animation-delay: 0s;">🌱</div><div class="plant" style="left: 28%; animation-delay: 0.5s;">🌱</div><div class="plant" style="left: 46%; animation-delay: 1s;">🌱</div><div class="plant" style="left: 64%; animation-delay: 1.5s;">🌱</div><div class="plant" style="left: 82%; animation-delay: 2s;">🌿</div><div class="creature" data-index="0" style="left: 73.6688%; top: 213.506px;">🐠</div><div class="creature" data-index="1" style="left: 29.5741%; top: 148.185px;">🐟</div><div class="creature" data-index="2" style="left: 21.5057%; top: 76.3582px;">🐡</div><div class="creature" data-index="3" style="left: 22.581%; top: 233.902px;">🦈</div><div class="creature" data-index="4" style="left: 48.4978%; top: 50.5283px;">🐙</div><div class="particle" style="left: 26.1458%; bottom: 0px; animation-duration: 4.08744s;"></div><div class="particle" style="left: 48.0638%; bottom: 0px; animation-duration: 4.38838s;"></div><div class="particle" style="left: 9.62635%; bottom: 0px; animation-duration: 4.41731s;"></div><div class="particle" style="left: 46.0728%; bottom: 0px; animation-duration: 4.81634s;"></div><div class="particle" style="left: 10.5312%; bottom: 0px; animation-duration: 4.98026s;"></div><div class="particle" style="left: 53.1058%; bottom: 0px; animation-duration: 4.81303s;"></div><div class="particle" style="left: 74.695%; bottom: 0px; animation-duration: 4.32177s;"></div><div class="particle" style="left: 41.4555%; bottom: 0px; animation-duration: 3.41643s;"></div></div>
+     </div>
      <div class="metrics-grid">
       <div class="metric-card">
        <div class="metric-title">
@@ -569,7 +633,7 @@
        <div class="metric-display"><span class="metric-value" id="salinity-val">35.0</span> <span style="font-size: 11px; color: #80deea;">ppt</span>
        </div>
        <div class="metric-bar-container">
-        <div class="metric-bar bar-excellent" id="salinity-bar" style="width: 50%;"></div>
+        <div class="metric-bar bar-good" id="salinity-bar" style="width: 75%"></div>
        </div>
       </div>
       <div class="metric-card">
@@ -579,7 +643,7 @@
        <div class="metric-display"><span class="metric-value" id="oxygen-val">7.0</span> <span style="font-size: 11px; color: #80deea;">mg/L</span>
        </div>
        <div class="metric-bar-container">
-        <div class="metric-bar bar-excellent" id="oxygen-bar" style="width: 40%;"></div>
+        <div class="metric-bar bar-good" id="oxygen-bar" style="width: 75%"></div>
        </div>
       </div>
       <div class="metric-card">
@@ -589,17 +653,17 @@
        <div class="metric-display"><span class="metric-value" id="ammonia-val">0.1</span> <span style="font-size: 11px; color: #80deea;">ppm</span>
        </div>
        <div class="metric-bar-container">
-        <div class="metric-bar bar-excellent" id="ammonia-bar" style="width: 10%;"></div>
+        <div class="metric-bar bar-good" id="ammonia-bar" style="width: 90%"></div>
        </div>
       </div>
       <div class="metric-card">
        <div class="metric-title">
         🌡️ Temperature
        </div>
-       <div class="metric-display"><span class="metric-value" id="temp-val">25.0</span> <span style="font-size: 11px; color: #80deea;">°C</span>
+       <div class="metric-display"><span class="metric-value" id="temp-val">25</span> <span style="font-size: 11px; color: #80deea;">°C</span>
        </div>
        <div class="metric-bar-container">
-        <div class="metric-bar bar-excellent" id="temp-bar" style="width: 50%;"></div>
+        <div class="metric-bar bar-good" id="temp-bar" style="width: 75%"></div>
        </div>
       </div>
       <div class="metric-card">
@@ -609,7 +673,7 @@
        <div class="metric-display"><span class="metric-value" id="ph-val">8.2</span> <span style="font-size: 11px; color: #80deea;">pH</span>
        </div>
        <div class="metric-bar-container">
-        <div class="metric-bar bar-excellent" id="ph-bar" style="width: 53.8462%;"></div>
+        <div class="metric-bar bar-good" id="ph-bar" style="width: 80%"></div>
        </div>
       </div>
       <div class="metric-card">
@@ -627,26 +691,15 @@
     <div class="control-panel">
      <div class="actions-container">
       <h2 class="actions-title">⚙️ ACTIONS</h2>
-      <div class="action-grid"><button class="action-button" id="action-climate"> <span class="action-icon">🌡️</span> <span>
-        Adjust Climate</span> <span class="action-cost" style="font-weight: bold;" ><h4>$30</h4></span> </button> <button class="action-button" id="action-feed"> 
-          <span class="action-icon">🐟</span> <span>Feed Animals</span> <span class="action-cost" style="font-weight: bold;" ><h4>$20</h4></span> 
-          </button> <button class="action-button" id="action-clean"> <span class="action-icon">🧹</span> 
-            <span>Clean Tank</span> <span class="action-cost" style="font-weight: bold;" ><h4>$25</h4></span> </button> <button class="action-button" id="action-enrich">
-               <span class="action-icon">🌱</span> <span>Add Enrichment</span> <span class="action-cost" style="font-weight: bold;" ><h4>$40</h4></span> </button> 
-               <button class="action-button" id="action-repair"> <span class="action-icon">🔧</span> <span>Repair Equipment</span>
-                 <span class="action-cost" style="font-weight: bold;" ><h4>$50</h4></span> </button> <button class="action-button" id="action-filter"> 
-                  <span class="action-icon">💧</span> <span>Backwash Filter</span> <span class="action-cost" style="font-weight: bold;" ><h4>$35</h4></span> 
-                  </button> <button class="action-button day-advance-btn" id="action-end-day"> 
-                    <span class="action-icon">⏭️</span> <span>END DAY</span><span style="font-weight: bold;" ><h4>$15</h4></span> </button>
+      <div class="action-grid"><button class="action-button" id="action-climate"> <span class="action-icon">🌡️</span> <span>Adjust Climate</span> <span class="action-cost">$30</span> </button> <button class="action-button" id="action-feed"> <span class="action-icon">🐟</span> <span>Feed Animals</span> <span class="action-cost">$20</span> </button> <button class="action-button" id="action-clean"> <span class="action-icon">🧹</span> <span>Clean Tank</span> <span class="action-cost">$25</span> </button> <button class="action-button" id="action-enrich"> <span class="action-icon">🎨</span> <span>Add Enrichment</span> <span class="action-cost">$40</span> </button> <button class="action-button" id="action-repair"> <span class="action-icon">🔧</span> <span>Repair Equipment</span> <span class="action-cost">$50</span> </button> <button class="action-button" id="action-filter"> <span class="action-icon">💧</span> <span>Backwash Filter</span> <span class="action-cost">$35</span> </button> <button class="action-button day-advance-btn" id="action-end-day"> <span class="action-icon">⏭️</span> <span>END DAY</span> </button>
       </div>
      </div>
      <div class="log-container">
       <h3 class="log-title">📋 Event Log</h3>
-      <div class="log-messages" id="log-messages"><div class="log-message log-info">💡 Marine Rule #2:
-         Overfeeding has 20% chance to spike ammonia!</div><div class="log-message log-info">💡 Marine Rule #1:
-           Filter needs backwash every 3 days or oxygen drops!</div><div class="log-message log-info">
-            🎮 Welcome to Marine Aquarium Simulator! Survive 5 days with Comfort ≥70 and Health ≥70.
-  
+      <div class="log-messages" id="log-messages"></div>
+     </div>
+    </div>
+   </div>
   </div>
   <div class="modal-overlay" id="game-over-modal">
    <div class="modal-content" id="modal-content">
@@ -668,7 +721,7 @@
       constructor() {
         this.state = {
           day: 1,
-          budget: 200,
+          budget: 500,
           comfort: 75,
           health: 75,
           cleanliness: 80,
@@ -701,8 +754,8 @@
         this.setupAquarium();
         this.setupEventListeners();
         this.updateDisplay();
-        this.logMessage("🎮 Welcome to Marine Aquarium Simulator! Survive 5 days with Comfort ≥70 and Health ≥70.", "info");
-        this.logMessage("💡 Marine Rule #1: Filter needs backwash every 3 days or oxygen drops!", "info");
+        this.logMessage("🎮 Welcome to Marine Aquarium Simulator! Survive 10 days with Comfort ≥70 and Health ≥70.", "info");
+        this.logMessage("🔧 Marine Rule #1: Filter needs backwash every 3 days or oxygen drops!", "info");
         this.logMessage("💡 Marine Rule #2: Overfeeding has 20% chance to spike ammonia!", "info");
         this.startAnimations();
       }
@@ -710,26 +763,6 @@
       setupAquarium() {
         const tank = document.getElementById('aquarium');
         
-        // Add rocks
-        for (let i = 0; i < 4; i++) {
-          const rock = document.createElement('div');
-          rock.className = 'rock';
-          rock.textContent = '⚫';
-          rock.style.left = `${15 + i * 25}%`;
-          tank.appendChild(rock);
-        }
-
-        // Add plants/coral
-        const plantEmojis = ['🌿', '🍃', '🌱'];
-        for (let i = 0; i < 5; i++) {
-          const plant = document.createElement('div');
-          plant.className = 'plant';
-          plant.textContent = plantEmojis[Math.floor(Math.random() * plantEmojis.length)];
-          plant.style.left = `${10 + i * 18}%`;
-          plant.style.animationDelay = `${i * 0.5}s`;
-          tank.appendChild(plant);
-        }
-
         // Add fish
         const fishTypes = ['🐠', '🐟', '🐡', '🦈', '🐙'];
         for (let i = 0; i < 5; i++) {
@@ -761,6 +794,9 @@
         for (let i = 0; i < 8; i++) {
           setTimeout(() => this.createParticle(), i * 500);
         }
+
+        // Dirt and algae will be added dynamically based on salinity
+        this.updateTankCleanliness();
       }
 
       createParticle() {
@@ -782,6 +818,42 @@
         }, 4000);
       }
 
+      updateTankCleanliness() {
+        const tank = document.getElementById('aquarium');
+        
+        // Remove existing dirt and algae
+        const existingDirt = tank.querySelectorAll('.dirt-particle, .algae-spot');
+        existingDirt.forEach(el => el.remove());
+        
+        // Add dirt and algae based on salinity (clean at 35.0, dirty below)
+        if (this.state.salinity < 35.0) {
+          const dirtAmount = Math.floor((35.0 - this.state.salinity) * 5);
+          const algaeAmount = Math.floor((35.0 - this.state.salinity) * 3);
+          
+          // Add dirt particles
+          for (let i = 0; i < Math.min(dirtAmount, 30); i++) {
+            const dirt = document.createElement('div');
+            dirt.className = 'dirt-particle';
+            dirt.style.left = `${Math.random() * 90 + 5}%`;
+            dirt.style.bottom = `${Math.random() * 30 + 5}%`;
+            dirt.style.animationDelay = `${Math.random() * 8}s`;
+            dirt.style.animationDuration = `${6 + Math.random() * 4}s`;
+            tank.appendChild(dirt);
+          }
+          
+          // Add algae spots
+          for (let i = 0; i < Math.min(algaeAmount, 15); i++) {
+            const algae = document.createElement('div');
+            algae.className = 'algae-spot';
+            algae.style.left = `${Math.random() * 95}%`;
+            algae.style.top = `${Math.random() * 80 + 10}%`;
+            algae.style.width = `${15 + Math.random() * 15}px`;
+            algae.style.height = `${15 + Math.random() * 15}px`;
+            tank.appendChild(algae);
+          }
+        }
+      }
+
       onCreatureClick(index) {
         this.logMessage(`🐠 You interacted with creature #${index + 1}! It seems happy!`, "success");
         this.state.comfort = Math.min(100, this.state.comfort + 1);
@@ -799,8 +871,14 @@
             if (creature.x < 5 || creature.x > 90) creature.vx *= -1;
             if (creature.y < 30 || creature.y > 320) creature.vy *= -1;
 
+            // Make fish face the direction they're moving
+            if (creature.vx > 0) {
+              creature.element.classList.add('facing-left');
+            } else {
+              creature.element.classList.remove('facing-left');
+            }
+
             creature.element.style.left = `${creature.x}%`;
-             creature.element.style.right = `${creature.x}%`;
             creature.element.style.top = `${creature.y}px`;
           });
 
@@ -854,7 +932,7 @@
           case 'enrich':
             this.state.comfort += 5;
             this.state.enrichmentActive = true;
-            this.logMessage("🌱 Environmental enrichment added! Animals exploring happily!", "success");
+            this.logMessage("🎨 Environmental enrichment added! Animals exploring happily!", "success");
             break;
 
           case 'repair':
@@ -1013,38 +1091,65 @@
       }
 
       checkGameEnd() {
-        // Check if salinity reached 0%
-        if (this.state.salinity <= 0) {
-          this.endGame(false, "CRITICAL: Salinity dropped to 0%! All marine life perished!");
+        // Check if any metric bar is in critical (red) state
+        const range = this.IDEAL_RANGES;
+        
+        // Check salinity - critical if too far from ideal range
+        if (this.state.salinity < range.salinity.min || this.state.salinity > range.salinity.max) {
+          const distance = Math.min(
+            Math.abs(this.state.salinity - range.salinity.min),
+            Math.abs(this.state.salinity - range.salinity.max)
+          );
+          if (distance > 1.5) {
+            this.endGame(false, "CRITICAL: Salinity reached dangerous levels! Marine life perished!");
+            return;
+          }
+        }
+        
+        // Check oxygen - critical if too far from ideal range
+        if (this.state.oxygen < range.oxygen.min || this.state.oxygen > range.oxygen.max) {
+          const distance = Math.min(
+            Math.abs(this.state.oxygen - range.oxygen.min),
+            Math.abs(this.state.oxygen - range.oxygen.max)
+          );
+          if (distance > 1.5) {
+            this.endGame(false, "CRITICAL: Oxygen levels reached lethal levels! Marine life suffocated!");
+            return;
+          }
+        }
+        
+        // Check ammonia - critical if above 0.5 (when bar turns red)
+        if (this.state.ammonia > 0.5) {
+          this.endGame(false, "CRITICAL: Ammonia poisoning! All animals died!");
           return;
         }
         
-        // Check if oxygen reached 0%
-        if (this.state.oxygen <= 0) {
-          this.endGame(false, "CRITICAL: Oxygen depleted to 0%! Marine life suffocated!");
-          return;
+        // Check temperature - critical if too far from ideal range
+        if (this.state.temperature < range.temperature.min || this.state.temperature > range.temperature.max) {
+          const distance = Math.min(
+            Math.abs(this.state.temperature - range.temperature.min),
+            Math.abs(this.state.temperature - range.temperature.max)
+          );
+          if (distance > 1.5) {
+            this.endGame(false, "CRITICAL: Temperature reached lethal levels! All animals died!");
+            return;
+          }
         }
         
-        // Check if temperature is too extreme (below 0 or above extreme)
-        if (this.state.temperature <= 0 || this.state.temperature >= 40) {
-          this.endGame(false, "CRITICAL: Temperature reached lethal levels! All animals died!");
-          return;
+        // Check pH - critical if too far from ideal range
+        if (this.state.ph < range.ph.min || this.state.ph > range.ph.max) {
+          const distance = Math.min(
+            Math.abs(this.state.ph - range.ph.min),
+            Math.abs(this.state.ph - range.ph.max)
+          );
+          if (distance > 1.5) {
+            this.endGame(false, "CRITICAL: pH reached toxic levels! Marine ecosystem collapsed!");
+            return;
+          }
         }
         
-        // Check if pH is too extreme (below 6 or above 10)
-        if (this.state.ph <= 6.0 || this.state.ph >= 10.0) {
-          this.endGame(false, "CRITICAL: pH reached toxic levels! Marine ecosystem collapsed!");
-          return;
-        }
-        
-        // Check if ammonia reached toxic levels (1.0 ppm = 100%)
-        if (this.state.ammonia >= 1.0) {
-          this.endGame(false, "CRITICAL: Ammonia poisoning at 100%! All animals died!");
-          return;
-        }
-        
-        // Check if filter is completely clogged (4+ cycles without backwash)
-        if (this.state.filterCycles >= 4) {
+        // Check if filter is completely clogged (bar turns red at 0%)
+        if (this.state.filterCycles >= 3) {
           this.endGame(false, "CRITICAL: Filter completely failed! System shutdown!");
           return;
         }
@@ -1064,8 +1169,8 @@
           return;
         }
         
-        if (this.state.day > 5 && this.state.comfort >= 70 && this.state.health >= 70) {
-          this.endGame(true, "Successfully maintained the aquarium for 5 days!");
+        if (this.state.day > 10 && this.state.comfort >= 70 && this.state.health >= 70) {
+          this.endGame(true, "Successfully maintained the aquarium for 10 days!");
           return;
         }
       }
@@ -1102,11 +1207,13 @@
         document.getElementById('health-display').textContent = Math.round(this.state.health);
         document.getElementById('cleanliness-display').textContent = Math.round(this.state.cleanliness);
 
-        this.updateMetric('salinity', this.state.salinity, 30, 40);
-        this.updateMetric('oxygen', this.state.oxygen, 5, 10);
-        this.updateMetric('ammonia', this.state.ammonia, 0, 1, true);
-        this.updateMetric('temp', this.state.temperature, 20, 30);
-        this.updateMetric('ph', this.state.ph, 7.5, 8.8);
+        this.updateMetric('salinity', this.state.salinity, 30, 40, 33, 37);
+        this.updateMetric('oxygen', this.state.oxygen, 5, 10, 6.5, 8.0);
+        this.updateMetric('ammonia', this.state.ammonia, 0, 1, 0, 0.2);
+        this.updateMetric('temp', this.state.temperature, 20, 30, 24, 28);
+        this.updateMetric('ph', this.state.ph, 7.5, 8.8, 8.0, 8.4);
+        
+        this.updateTankCleanliness();
 
         const filterStatus = this.state.filterCycles === 0 ? 'Clean' : 
                            this.state.filterCycles === 1 ? 'Good' :
@@ -1121,19 +1228,33 @@
         this.updateButtons();
       }
 
-      updateMetric(name, value, min, max, inverse = false) {
+      updateMetric(name, value, min, max, idealMin, idealMax) {
         document.getElementById(`${name}-val`).textContent = value.toFixed(1);
         
         const percentage = ((value - min) / (max - min)) * 100;
         const bar = document.getElementById(`${name}-bar`);
         bar.style.width = `${Math.max(0, Math.min(100, percentage))}%`;
 
+        // Add ideal range indicator
+        const container = bar.parentElement;
+        let indicator = container.querySelector('.ideal-range-indicator');
+        if (!indicator) {
+          indicator = document.createElement('div');
+          indicator.className = 'ideal-range-indicator';
+          container.appendChild(indicator);
+        }
+        
+        const idealMinPercent = ((idealMin - min) / (max - min)) * 100;
+        const idealMaxPercent = ((idealMax - min) / (max - min)) * 100;
+        indicator.style.left = `${idealMinPercent}%`;
+        indicator.style.width = `${idealMaxPercent - idealMinPercent}%`;
+
         let barClass = 'bar-excellent';
         
         if (name === 'ammonia') {
-          if (value > 0.2) barClass = 'bar-critical';
-          else if (value > 0.15) barClass = 'bar-warning';
-          else if (value > 0.1) barClass = 'bar-good';
+          if (value > 0.5) barClass = 'bar-critical';
+          else if (value > 0.3) barClass = 'bar-warning';
+          else if (value > 0.2) barClass = 'bar-good';
         } else {
           const range = this.IDEAL_RANGES[name] || { min: 0, max: 100 };
           if (value < range.min || value > range.max) {
@@ -1168,11 +1289,14 @@
         messageEl.className = `log-message log-${type}`;
         messageEl.textContent = text;
         
-        logContainer.insertBefore(messageEl, logContainer.firstChild);
+        logContainer.appendChild(messageEl);
         
         if (logContainer.children.length > 30) {
-          logContainer.removeChild(logContainer.lastChild);
+          logContainer.removeChild(logContainer.firstChild);
         }
+        
+        // Auto-scroll to bottom (newest message)
+        logContainer.scrollTop = logContainer.scrollHeight;
       }
     }
 
@@ -1211,5 +1335,5 @@
     // Start the game
     game.init();
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a037a419412853f',t:'MTc2MzQyNzA2Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border: none; visibility: hidden;" src="./Untitled-1_files/saved_resource.html"></iframe><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border: none; visibility: hidden;" src="./Untitled-1_files/saved_resource(1).html"></iframe><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border: none; visibility: hidden;" src="./Untitled-1_files/saved_resource(2).html"></iframe>
-</body></html>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a40583990b12117',t:'MTc2NDA2NTMwNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
