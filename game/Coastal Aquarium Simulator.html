@@ -391,9 +391,9 @@
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
       flex: 1;
       overflow: hidden;
-     scrollbar-width: none;
       display: flex;
       flex-direction: column;
+      min-height: 0;
     }
 
     .log-title {
@@ -403,13 +403,30 @@
       font-weight: bold;
     }
 
-   .log-messages {
+    .log-messages {
       flex: 1;
-     max-height: 180px;
       overflow-y: auto;
-      display: none;
+      display: flex;
       flex-direction: column;
-     scrollbar-width: none;
+      min-height: 0;
+    }
+
+    .log-messages::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .log-messages::-webkit-scrollbar-track {
+      background: rgba(0, 30, 50, 0.5);
+      border-radius: 4px;
+    }
+
+    .log-messages::-webkit-scrollbar-thumb {
+      background: rgba(77, 208, 225, 0.5);
+      border-radius: 4px;
+    }
+
+    .log-messages::-webkit-scrollbar-thumb:hover {
+      background: rgba(77, 208, 225, 0.7);
     }
 
     .log-message {
@@ -420,8 +437,9 @@
       line-height: 1.6;
       border-left: 4px solid;
       animation: slideIn 0.3s ease-out;
+      flex-shrink: 0;
     }
-   
+
     @keyframes slideIn {
       from {
         opacity: 0;
