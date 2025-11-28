@@ -830,6 +830,9 @@
         // Remove existing dirt and algae
         const existingDirt = tank.querySelectorAll('.dirt-particle, .algae-spot');
         existingDirt.forEach(el => el.remove());
+
+        let totalDirtAmount = 0;
+        let totalAlgaeAmount = 0;
         
         // Add dirt and algae based on salinity (clean at 35.0, dirty below)
         if (this.state.salinity < 35.0) {
@@ -864,7 +867,7 @@
             tank.appendChild(algae);
           }
         }
-      }
+      
 
       onCreatureClick(index) {
         this.logMessage(`🐠 You interacted with creature #${index + 1}! It seems happy!`, "success");
