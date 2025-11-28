@@ -835,9 +835,15 @@
         if (this.state.salinity < 35.0) {
           const dirtAmount = Math.floor((35.0 - this.state.salinity) * 5);
           const algaeAmount = Math.floor((35.0 - this.state.salinity) * 3);
+
+         // Add dirt and algae based on filter status (more cycles = dirtier)
+        if (this.state.filterCycles > 0) {
+          totalDirtAmount += this.state.filterCycles * 8;
+          totalAlgaeAmount += this.state.filterCycles * 4;
+        }
           
           // Add dirt particles
-          for (let i = 0; i < Math.min(dirtAmount, 30); i++) {
+          for (let i = 0; i < Math.min(dirtAmount, 40); i++) {
             const dirt = document.createElement('div');
             dirt.className = 'dirt-particle';
             dirt.style.left = `${Math.random() * 90 + 5}%`;
@@ -848,7 +854,7 @@
           }
           
           // Add algae spots
-          for (let i = 0; i < Math.min(algaeAmount, 15); i++) {
+          for (let i = 0; i < Math.min(algaeAmount, 20); i++) {
             const algae = document.createElement('div');
             algae.className = 'algae-spot';
             algae.style.left = `${Math.random() * 95}%`;
