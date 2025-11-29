@@ -615,7 +615,7 @@
        Budget
       </div>
       <div class="status-number" id="budget-display">
-       $500
+       $400
       </div>
      </div>
      <div class="status-box">
@@ -715,7 +715,7 @@
     <div class="control-panel">
      <div class="actions-container">
       <h2 class="actions-title">⚙️ ACTIONS</h2>
-      <div class="action-grid"><button class="action-button" id="action-climate"> <span class="action-icon">🌡️</span> <span>Adjust Climate</span> <span class="action-cost">$30</span> </button> <button class="action-button" id="action-feed"> <span class="action-icon">🐟</span> <span>Feed Animals</span> <span class="action-cost">$20</span> </button> <button class="action-button" id="action-clean"> <span class="action-icon">🧹</span> <span>Clean Tank</span> <span class="action-cost">$25</span> </button> <button class="action-button" id="action-enrich"> <span class="action-icon">🎨</span> <span>Add Enrichment</span> <span class="action-cost">$40</span> </button> <button class="action-button" id="action-repair"> <span class="action-icon">🔧</span> <span>Repair Equipment</span> <span class="action-cost">$50</span> </button> <button class="action-button" id="action-filter"> <span class="action-icon">💧</span> <span>Backwash Filter</span> <span class="action-cost">$35</span> </button> <button class="action-button day-advance-btn" id="action-end-day"> <span class="action-icon">⏭️</span> <span>END DAY</span> </button>
+      <div class="action-grid"><button class="action-button" id="action-climate"> <span class="action-icon">🌡️</span> <span>Adjust Climate</span> <span class="action-cost">$30</span> </button> <button class="action-button" id="action-feed"> <span class="action-icon">🐟</span> <span>Feed Animals</span> <span class="action-cost">$20</span> </button> <button class="action-button" id="action-clean"> <span class="action-icon">🧹</span> <span>Clean Tank</span> <span class="action-cost">$25</span> </button> <button class="action-button" id="action-enrich"> <span class="action-icon">🌱</span> <span>Add Enrichment</span> <span class="action-cost">$40</span> </button> <button class="action-button" id="action-repair"> <span class="action-icon">🔧</span> <span>Repair Equipment</span> <span class="action-cost">$50</span> </button> <button class="action-button" id="action-filter"> <span class="action-icon">💧</span> <span>Backwash Filter</span> <span class="action-cost">$35</span> </button> <button class="action-button day-advance-btn" id="action-end-day"> <span class="action-icon">⏭️</span> <span>END DAY</span> </button>
       </div>
      </div>
      <div class="log-container">
@@ -745,7 +745,7 @@
       constructor() {
         this.state = {
           day: 1,
-          budget: 500,
+          budget: 400,
           comfort: 75,
           health: 75,
           cleanliness: 80,
@@ -965,7 +965,7 @@
           case 'enrich':
             this.state.comfort += 5;
             this.state.enrichmentActive = true;
-            this.logMessage("🎨 Environmental enrichment added! Animals exploring happily!", "success");
+            this.logMessage("🌱 Environmental enrichment added! Animals exploring happily!", "success");
             break;
 
           case 'repair':
