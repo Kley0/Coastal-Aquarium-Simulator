@@ -200,6 +200,119 @@
       z-index: 2;
     }
 
+   .seagrass {
+      position: absolute;
+      bottom: 0;
+      z-index: 2;
+    }
+
+    .seagrass-blade {
+      position: absolute;
+      bottom: 0;
+      width: 8px;
+      background: linear-gradient(to top, #2d5016 0%, #4a7c2c 50%, #6b9d4a 100%);
+      border-radius: 4px 4px 0 0;
+      transform-origin: bottom center;
+      animation: seagrassSway 3s ease-in-out infinite;
+    }
+
+    .seagrass-blade:nth-child(1) {
+      left: 0;
+      height: 60px;
+      animation-delay: 0s;
+    }
+
+    .seagrass-blade:nth-child(2) {
+      left: 10px;
+      height: 75px;
+      animation-delay: 0.3s;
+    }
+
+    .seagrass-blade:nth-child(3) {
+      left: 20px;
+      height: 65px;
+      animation-delay: 0.6s;
+    }
+
+    .seagrass-blade:nth-child(4) {
+      left: 30px;
+      height: 70px;
+      animation-delay: 0.9s;
+    }
+
+    .seagrass-blade:nth-child(5) {
+      left: 40px;
+      height: 55px;
+      animation-delay: 1.2s;
+    }
+
+    @keyframes seagrassSway {
+      0%, 100% {
+        transform: rotate(-8deg) scaleY(1);
+      }
+      25% {
+        transform: rotate(5deg) scaleY(1.02);
+      }
+      50% {
+        transform: rotate(8deg) scaleY(1);
+      }
+      75% {
+        transform: rotate(-5deg) scaleY(0.98);
+      }
+    }
+
+    .kelp {
+      position: absolute;
+      bottom: 0;
+      z-index: 2;
+    }
+
+    .kelp-strand {
+      position: absolute;
+      bottom: 0;
+      width: 12px;
+      background: linear-gradient(to top, #1a3d0f 0%, #2d5a1e 40%, #4a7c2c 100%);
+      border-radius: 6px 6px 0 0;
+      transform-origin: bottom center;
+      animation: kelpWave 4s ease-in-out infinite;
+    }
+
+    .kelp-strand:nth-child(1) {
+      left: 0;
+      height: 90px;
+      animation-delay: 0s;
+    }
+
+    .kelp-strand:nth-child(2) {
+      left: 15px;
+      height: 110px;
+      animation-delay: 0.5s;
+    }
+
+    .kelp-strand:nth-child(3) {
+      left: 30px;
+      height: 95px;
+      animation-delay: 1s;
+    }
+
+    @keyframes kelpWave {
+      0%, 100% {
+        transform: rotate(-12deg) scaleY(1);
+      }
+      50% {
+        transform: rotate(12deg) scaleY(1.05);
+      }
+    }
+
+    .stone {
+      position: absolute;
+      bottom: 5px;
+      z-index: 1;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #5a5a5a 0%, #3d3d3d 50%, #2a2a2a 100%);
+      box-shadow: inset -2px -2px 4px rgba(0, 0, 0, 0.5), inset 2px 2px 4px rgba(255, 255, 255, 0.1);
+    }
+
     .particle {
       position: absolute;
       width: 6px;
@@ -615,7 +728,7 @@
        Budget
       </div>
       <div class="status-number" id="budget-display">
-       $500
+       $400
       </div>
      </div>
      <div class="status-box">
@@ -786,7 +899,55 @@
 
       setupAquarium() {
         const tank = document.getElementById('aquarium');
+
+       // Add seagrass clusters
+        const seagrassPositions = [5, 15, 28, 40, 52, 65, 78, 88];
+        seagrassPositions.forEach(pos => {
+          const seagrass = document.createElement('div');
+          seagrass.className = 'seagrass';
+          seagrass.style.left = `${pos}%`;
+          for (let i = 0; i < 5; i++) {
+            const blade = document.createElement('div');
+            blade.className = 'seagrass-blade';
+            seagrass.appendChild(blade);
+          }
+          tank.appendChild(seagrass);
+        });
+
+        // Add kelp (taller seaweed)
+        const kelpPositions = [22, 58, 85];
+        kelpPositions.forEach(pos => {
+          const kelp = document.createElement('div');
+          kelp.className = 'kelp';
+          kelp.style.left = `${pos}%`;
+          for (let i = 0; i < 3; i++) {
+            const strand = document.createElement('div');
+            strand.className = 'kelp-strand';
+            kelp.appendChild(strand);
+          }
+          tank.appendChild(kelp);
+        });
+
+        // Add stones
+        const stoneData = [
+          { left: 10, width: 40, height: 25 },
+          { left: 25, width: 30, height: 20 },
+          { left: 48, width: 35, height: 22 },
+          { left: 70, width: 45, height: 28 },
+          { left: 82, width: 25, height: 18 },
+          { left: 35, width: 20, height: 15 },
+          { left: 60, width: 28, height: 20 }
+        ];
         
+        stoneData.forEach(stone => {
+          const stoneEl = document.createElement('div');
+          stoneEl.className = 'stone';
+          stoneEl.style.left = `${stone.left}%`;
+          stoneEl.style.width = `${stone.width}px`;
+          stoneEl.style.height = `${stone.height}px`;
+          tank.appendChild(stoneEl);
+        });
+       
         // Add fish
         const fishTypes = ['🐠', '🐟', '🐡', '🦈', '🐙'];
         for (let i = 0; i < 5; i++) {
@@ -965,7 +1126,7 @@
           case 'enrich':
             this.state.comfort += 5;
             this.state.enrichmentActive = true;
-            this.logMessage("🎨 Environmental enrichment added! Animals exploring happily!", "success");
+            this.logMessage("🌿 Environmental enrichment added! Animals exploring happily!", "success");
             break;
 
           case 'repair':
