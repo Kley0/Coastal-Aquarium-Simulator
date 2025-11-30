@@ -200,119 +200,6 @@
       z-index: 2;
     }
 
-    .seagrass {
-      position: absolute;
-      bottom: 0;
-      z-index: 2;
-    }
-
-    .seagrass-blade {
-      position: absolute;
-      bottom: 0;
-      width: 8px;
-      background: linear-gradient(to top, #2d5016 0%, #4a7c2c 50%, #6b9d4a 100%);
-      border-radius: 4px 4px 0 0;
-      transform-origin: bottom center;
-      animation: seagrassSway 3s ease-in-out infinite;
-    }
-
-    .seagrass-blade:nth-child(1) {
-      left: 0;
-      height: 60px;
-      animation-delay: 0s;
-    }
-
-    .seagrass-blade:nth-child(2) {
-      left: 10px;
-      height: 75px;
-      animation-delay: 0.3s;
-    }
-
-    .seagrass-blade:nth-child(3) {
-      left: 20px;
-      height: 65px;
-      animation-delay: 0.6s;
-    }
-
-    .seagrass-blade:nth-child(4) {
-      left: 30px;
-      height: 70px;
-      animation-delay: 0.9s;
-    }
-
-    .seagrass-blade:nth-child(5) {
-      left: 40px;
-      height: 55px;
-      animation-delay: 1.2s;
-    }
-
-    @keyframes seagrassSway {
-      0%, 100% {
-        transform: rotate(-8deg) scaleY(1);
-      }
-      25% {
-        transform: rotate(5deg) scaleY(1.02);
-      }
-      50% {
-        transform: rotate(8deg) scaleY(1);
-      }
-      75% {
-        transform: rotate(-5deg) scaleY(0.98);
-      }
-    }
-
-    .kelp {
-      position: absolute;
-      bottom: 0;
-      z-index: 2;
-    }
-
-    .kelp-strand {
-      position: absolute;
-      bottom: 0;
-      width: 12px;
-      background: linear-gradient(to top, #1a3d0f 0%, #2d5a1e 40%, #4a7c2c 100%);
-      border-radius: 6px 6px 0 0;
-      transform-origin: bottom center;
-      animation: kelpWave 4s ease-in-out infinite;
-    }
-
-    .kelp-strand:nth-child(1) {
-      left: 0;
-      height: 90px;
-      animation-delay: 0s;
-    }
-
-    .kelp-strand:nth-child(2) {
-      left: 15px;
-      height: 110px;
-      animation-delay: 0.5s;
-    }
-
-    .kelp-strand:nth-child(3) {
-      left: 30px;
-      height: 95px;
-      animation-delay: 1s;
-    }
-
-    @keyframes kelpWave {
-      0%, 100% {
-        transform: rotate(-12deg) scaleY(1);
-      }
-      50% {
-        transform: rotate(12deg) scaleY(1.05);
-      }
-    }
-
-    .stone {
-      position: absolute;
-      bottom: 5px;
-      z-index: 1;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #5a5a5a 0%, #3d3d3d 50%, #2a2a2a 100%);
-      box-shadow: inset -2px -2px 4px rgba(0, 0, 0, 0.5), inset 2px 2px 4px rgba(255, 255, 255, 0.1);
-    }
-
     .particle {
       position: absolute;
       width: 6px;
@@ -504,6 +391,7 @@
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
       flex: 1;
       overflow: hidden;
+     scrollbar-width: none;
       display: flex;
       flex-direction: column;
       min-height: 0;
@@ -518,10 +406,12 @@
 
     .log-messages {
       flex: 1;
+     max-height: 180px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
       min-height: 0;
+     scrollbar-width: none;
     }
 
     .log-messages::-webkit-scrollbar {
@@ -706,7 +596,8 @@
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
   <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
-  <body>
+ </head>
+ <body>
   <div class="game-wrapper">
    <div class="top-bar">
     <h1 class="game-title" id="game-title">🌊 MARINE AQUARIUM SIMULATOR 🌊</h1>
@@ -724,7 +615,7 @@
        Budget
       </div>
       <div class="status-number" id="budget-display">
-       $400
+       $500
       </div>
      </div>
      <div class="status-box">
@@ -824,7 +715,7 @@
     <div class="control-panel">
      <div class="actions-container">
       <h2 class="actions-title">⚙️ ACTIONS</h2>
-      <div class="action-grid"><button class="action-button" id="action-climate"> <span class="action-icon">🌡️</span> <span>Adjust Climate</span> <span class="action-cost">$30</span> </button> <button class="action-button" id="action-feed"> <span class="action-icon">🐟</span> <span>Feed Animals</span> <span class="action-cost">$20</span> </button> <button class="action-button" id="action-clean"> <span class="action-icon">🧹</span> <span>Clean Tank</span> <span class="action-cost">$25</span> </button> <button class="action-button" id="action-enrich"> <span class="action-icon">🌱</span> <span>Add Enrichment</span> <span class="action-cost">$40</span> </button> <button class="action-button" id="action-repair"> <span class="action-icon">🔧</span> <span>Repair Equipment</span> <span class="action-cost">$50</span> </button> <button class="action-button" id="action-filter"> <span class="action-icon">💧</span> <span>Backwash Filter</span> <span class="action-cost">$35</span> </button> <button class="action-button day-advance-btn" id="action-end-day"> <span class="action-icon">⏭️</span> <span>END DAY</span> </button>
+      <div class="action-grid"><button class="action-button" id="action-climate"> <span class="action-icon">🌡️</span> <span>Adjust Climate</span> <span class="action-cost">$30</span> </button> <button class="action-button" id="action-feed"> <span class="action-icon">🐟</span> <span>Feed Animals</span> <span class="action-cost">$20</span> </button> <button class="action-button" id="action-clean"> <span class="action-icon">🧹</span> <span>Clean Tank</span> <span class="action-cost">$25</span> </button> <button class="action-button" id="action-enrich"> <span class="action-icon">🎨</span> <span>Add Enrichment</span> <span class="action-cost">$40</span> </button> <button class="action-button" id="action-repair"> <span class="action-icon">🔧</span> <span>Repair Equipment</span> <span class="action-cost">$50</span> </button> <button class="action-button" id="action-filter"> <span class="action-icon">💧</span> <span>Backwash Filter</span> <span class="action-cost">$35</span> </button> <button class="action-button day-advance-btn" id="action-end-day"> <span class="action-icon">⏭️</span> <span>END DAY</span> </button>
       </div>
      </div>
      <div class="log-container">
@@ -854,7 +745,7 @@
       constructor() {
         this.state = {
           day: 1,
-          budget: 400,
+          budget: 500,
           comfort: 75,
           health: 75,
           cleanliness: 80,
@@ -1074,7 +965,7 @@
           case 'enrich':
             this.state.comfort += 5;
             this.state.enrichmentActive = true;
-            this.logMessage("🌱 Environmental enrichment added! Animals exploring happily!", "success");
+            this.logMessage("🎨 Environmental enrichment added! Animals exploring happily!", "success");
             break;
 
           case 'repair':
