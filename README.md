@@ -76,5 +76,4 @@ replay the game back to Day 1.
 OVERALL HEAD DEVELOPER: Perado, Aiken Kley
 FRONTEND LEAD DEVELOPER: Mirabueno, Mar Christian
 FRONTEND DEVELOPER: Dela Cruz, Jerico Felipe
-BACKEND LEAD DEVELOPER: Bermido, Crissan Elias
-BACKEND DEVELOPER: Deza, Aedrian Sword Dranrebb L.
+BACKEND LEAD DEVELOPER: Deza, Aedrian Sword Dranrebb L.
